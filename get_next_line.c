@@ -52,7 +52,7 @@ char	*get_next_line(int fd)
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (read_bytes <= 0)
-            break;
+			break ;
 		buffer[read_bytes] = '\0';
 		tmp = ft_strjoin(repo, buffer);
 		free(repo);

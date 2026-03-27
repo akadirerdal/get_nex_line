@@ -22,20 +22,20 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char    *ft_strchr(const char *s,int c)
+char	*ft_strchr(const char *s, int c)
 {
-    unsigned char   ch;
+	unsigned char	ch;
 
-    ch = (unsigned char)c;
-    while(*s)
-    {
-        if((unsigned char)*s == ch)
-            return ((char *)s);
-        s++;
-    }
-    if (ch == '\0')
-        return((char *)s);
-    return (NULL);
+	ch = (unsigned char)c;
+	while (*s)
+	{
+		if ((unsigned char)*s == ch)
+			return ((char *)s);
+		s++;
+	}
+	if (ch == '\0')
+		return ((char *)s);
+	return (NULL);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
