@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aberdal <aberdal@student.42kocaeli.com.    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/28 17:31:13 by aberdal           #+#    #+#             */
-/*   Updated: 2026/02/28 17:59:54 by aberdal          ###   ########.fr       */
+/*   Updated: 2026/04/15 19:31:06 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ static char	*extract_line(char **repo)
 		remain = ft_substr(*repo, len, ft_strlen(*repo + len));
 	else
 		remain = NULL;
-	free(*repo);
+	if (*repo)
+		free (*repo);
 	*repo = remain;
 	return (line);
 }
@@ -45,7 +46,7 @@ char	*get_next_line(int fd)
 	ssize_t		read_bytes;
 	char		*tmp;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	read_bytes = 1;
 	while (!ft_strchr(repo, '\n') && read_bytes > 0)
@@ -55,12 +56,13 @@ char	*get_next_line(int fd)
 			break ;
 		buffer[read_bytes] = '\0';
 		tmp = ft_strjoin(repo, buffer);
-		free(repo);
+		if (repo)
+			free (repo);
 		repo = tmp;
 	}
 	if (repo && *repo)
 		return (extract_line(&repo));
-	free(repo);
-	repo = NULL;
+	if (repo)
+		free (repo);
 	return (NULL);
 }
