@@ -20,10 +20,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-//______GET_NEXT_LİNE_________//
 char	*get_next_line(int fd);
-
-//______GET_NEXT_LİNE_UTİLS___//
 char	*ft_strchr(const char *s, int c);
 size_t	ft_strlen(const char *s);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
