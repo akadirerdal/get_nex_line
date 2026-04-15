@@ -30,7 +30,7 @@ static char	*extract_line(char **repo)
 	if (!line)
 		return (NULL);
 	if ((*repo)[len] != '\0')
-		remain = ft_substr(*repo, len, ft_strlen(*repo + len));
+		remain = ft_substr(*repo, len, ft_strlen(*repo) - len);
 	else
 		remain = NULL;
 	if (*repo)
@@ -39,30 +39,48 @@ static char	*extract_line(char **repo)
 	return (line);
 }
 
-char	*get_next_line(int fd)
+static char	*read_repo(int fd, char *repo)
 {
-	static char	*repo;
-	char		buffer[BUFFER_SIZE + 1];
-	ssize_t		read_bytes;
-	char		*tmp;
+	char	*buffer;
+	char	*tmp;
+	ssize_t	read_bytes;
 
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (!buffer)
 		return (NULL);
 	read_bytes = 1;
-	while (!ft_strchr(repo, '\n') && read_bytes > 0)
+	while ((repo == NULL || !ft_strchr(repo, '\n')) && read_bytes > 0)
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (read_bytes <= 0)
 			break ;
 		buffer[read_bytes] = '\0';
 		tmp = ft_strjoin(repo, buffer);
-		if (repo)
-			free (repo);
+		free(repo);
 		repo = tmp;
+		if (!repo)
+			break ;
 	}
-	if (repo && *repo)
-		return (extract_line(&repo));
-	if (repo)
-		free (repo);
+	free(buffer);
+	return (repo);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*repo;
+	char		*line;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	repo = read_repo(fd, repo);
+	if (!repo)
+		return (NULL);
+	if (*repo)
+	{
+		line = extract_line(&repo);
+		return (line);
+	}
+	free(repo);
+	repo = NULL;
 	return (NULL);
 }
